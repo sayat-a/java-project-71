@@ -4,6 +4,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
+import java.util.Map;
 
 @Command(
         name = "gendiff",
@@ -25,14 +26,25 @@ public class App implements Runnable {
             defaultValue = "stylish"
     )
     private String format;
-    
+
     public static void main(String[] args) {
-        int exitCode = new CommandLine(new App()).execute(args);
-        System.exit(exitCode);
+        try {
+            int exitCode = new CommandLine(new App()).execute(args);
+            System.exit(exitCode);
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+            System.exit(1);
+        }
     }
     @Override
     public void run() {
-        // Если никакие аргументы не переданы, просто вывести сообщение
-        System.out.println("Please provide two files to compare.");
+        try {
+            Map<String, Object> data1 = FileUtils.readJsonFile(filepath1);
+            Map<String, Object> data2 = FileUtils.readJsonFile(filepath2);
+            System.out.println("File 1 data: " + data1);
+            System.out.println("File 2 data: " + data2);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to process files: " + e.getMessage());
+        }
     }
 }
