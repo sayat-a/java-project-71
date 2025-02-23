@@ -2,6 +2,7 @@ plugins {
     application
     id("checkstyle")
     id("com.github.ben-manes.versions") version "0.52.0"
+    id("jacoco")
 }
 
 group = "hexlet.code"
@@ -23,6 +24,17 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.0")
     implementation("com.fasterxml.jackson.core:jackson-core:2.15.0")
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.15.0")
+}
+
+jacoco {
+    toolVersion = "0.8.11"
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
+        html.required.set(false)
+    }
 }
 
 tasks.test {
