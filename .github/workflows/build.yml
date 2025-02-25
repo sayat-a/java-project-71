@@ -24,10 +24,14 @@ jobs:
           cache: 'gradle'
 
       - name: Run Checkstyle
-        run: ./gradlew checkstyleMain checkstyleTest
+        run: |
+          cd app
+          ./gradlew checkstyleMain checkstyleTest
 
       - name: Run tests with coverage
-        run: ./gradlew test jacocoTestReport
+        run: |
+          cd app
+          ./gradlew test jacocoTestReport
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
@@ -37,6 +41,7 @@ jobs:
 
       - name: Upload coverage to CodeClimate
         run: |
+          cd app
           ./gradlew jacocoTestReport
           export JACOCO_SOURCE_PATH=$(pwd)/app/src/main/java
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > cc-test-reporter
